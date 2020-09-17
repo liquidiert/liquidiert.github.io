@@ -1,0 +1,66 @@
+body {
+    background-color: #282A36;
+    color: LightGray;
+    font-family: "Courier New";
+    width: 100%;
+    margin: 0 auto;
+}
+
+h1 {
+    color: LightGray;
+    font-size: 30px;
+    font-weight: 900;
+    text-align: center;
+    padding: 5px;
+}
+
+#header {
+    margin: 0 auto;
+    text-align: center;
+}
+
+#desc {
+    display: block;
+    text-align: left;
+    width : 50%;
+}
+
+#contact {
+    display: block;
+    width : 50%;
+}
+
+#footer {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+a {
+    color: #a30f9e;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #BF12B9;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+    h1{
+        font-size:22px;
+    }
+    
+    #desc {
+    display: block;
+    text-align: left;
+    margin: 0 auto;
+    width : 100%;
+    }
+    
+    #contact {
+        display: block;
+        width: 100%;
+    }
+
+}
+
