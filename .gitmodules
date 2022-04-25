@@ -1,0 +1,3 @@
+[submodule "motionals"]
+	path = pages/motionals/src
+	url = https://github.com/liquidiert/motionals
