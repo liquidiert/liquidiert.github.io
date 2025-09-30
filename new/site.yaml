@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://json.schemastore.org/nuejs-site.json
+
+globals: ["@global"]
+libs: ["@library"]
+
+view_transitions: true
+native_css_nesting: true
+inline_css: true
+sections: true
+
+title_template: "liquidiert_686f6d6570616765 / %s"
+og_image: /img/website_logo.webp
+author: Korbinian Habereder
+favicon: /img/favicon.svg
+description: Coder and Flutter enthusiast
+port: 8083
+
+# OG image
+origin: https://liquidiert.github.io
+og: /img/website_logo.webp
+
+
+navigation:
+  header:
+    - Korbinian Habereder: /
+    - Contact: /contact/
+
+  footer:
+    - © Korbinian Habereder: /
+
+    - image: /img/github.svg
+      url: //github.com/liquidiert
+      alt: Github Projects
+      size: 22 x 22
+      target: _blank
+
+    - image: /img/linkedin.svg
+      url: //linkedin.com/in/korbinian-h-24a1b113a/
+      alt: LinkedIn profile
+      size: 22 x 22
+      target: _blank

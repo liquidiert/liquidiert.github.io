@@ -1,0 +1,1 @@
+header,h1,h1+p,h1+p+*{filter:none;opacity:1;transition:opacity .5s,filter .7s}@starting-style{:is(header,h1,h1+p,h1+p+*){filter:blur(10px);opacity:0}}h1{transition-delay:.1s}h1+p{transition-delay:.2s}h1+p+*{transition-delay:.4s}article{view-transition-name:article}::view-transition-old(article){transition:all .8s;transform:scale(1.2)translateY(2em)}
