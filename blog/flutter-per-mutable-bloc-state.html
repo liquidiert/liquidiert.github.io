@@ -1,0 +1,192 @@
+<!doctype html>
+
+<html lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>liquidiert_686f6d6570616765 / An Introduction to Persistent Mutable BLoC State</title>
+<link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
+<script src="/@nue/view-transitions.js" type="module"></script>
+<style>:root{--white:#fff;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-500:#6b7280;--gray-800:#1f2937;--gray-900:#111827;--gray-text:#d3d3d3;--link:#a30f9e;--link-hover:#bf12b9;--main-bg:#282a36;--marker:#fed716}
+*,*:before,*:after{box-sizing:border-box}ul,ol,figure,pre{margin:2em 0}body{background-color:var(--main-bg);max-width:1000px;margin:0 auto;padding:2% 5%}body>header nav{display:flex;justify-content:space-between;margin-bottom:4rem}body>header nav>a:first-child{background:url(/img/avatar-rounded.jpg) 0/2em no-repeat;padding-left:2.5em}body>header nav a{padding:1em 0}body article>header{margin-bottom:2rem}body article>section{max-width:700px;margin:0 auto}body>footer{border-top:1px solid var(--gray-200);margin-top:8rem}body>footer nav{display:flex;gap:.5em;padding:1rem 0}body>footer nav a{opacity:.8}body>footer nav a:hover{opacity:1}body>footer nav a:nth-child(2){margin-left:auto}
+body{color:var(--gray-text);font-family:-apple-system,BlinkMacSystemFont,Avenir Next,Segoe UI,Roboto}h1{letter-spacing:-.03em;font-size:2.6rem}h1{text-align:center;text-wrap:balance;max-width:40rem;margin:0 auto .2em}h1+p{text-align:center;text-wrap:balance;max-width:40rem;margin:0 auto .2em}h1+p{margin-bottom:2em;font-size:1.15em;font-weight:300}a{text-decoration:none;color:var(--link)}a:hover{color:var(--link-hover)}nav :is(a){color:var(--gray-text);font-weight:500}nav :is(a):hover{color:var(--link)}nav :is(a)[aria-current]{text-decoration:2px underline var(--link-hover);text-underline-offset:8px}p,li{color:var(--gray-text);line-height:1.65}:is(p,li) strong{color:var(--gray-white)}
+:root{--pink-gradient:linear-gradient(#e879f9,#ec4899);--blue-gradient:linear-gradient(#0ea5e9,#67e8f9)}.pink,.blue{background-image:var(--pink-gradient);overflow:hidden;border-radius:.8em;margin:1.5em 0 2em;padding:3em 0 0 3em}:is(.pink,.blue) pre{margin:0;padding:2em}:is(.pink,.blue)>*{border-radius:.6em 0 0}.blue{background-image:var(--blue-gradient)}
+article a{color:var(--link);font-weight:500}article a:hover{text-decoration-color:var(--link-hover);text-decoration-thickness:2px;text-underline-offset:3px;color:var(--link-hover)}h2{color:var(--gray-text);margin:4em 0 0;font-size:2rem;font-weight:500}h3{color:var(--gray-text);margin:2em 0 0;font-size:1.5rem;font-weight:500}li{text-wrap:balance;margin-bottom:1em}pre{--glow-padding:2em;font-size:105%}img,pre{border-radius:8px}img{max-width:100%;height:auto}blockquote{border-left:5px solid var(--gray-text);text-wrap:balance;margin:2.5em 0;padding-left:1.5em}blockquote p{color:var(--gray-text);font-size:140%;font-weight:600;line-height:1.5}blockquote strong{background-color:var(--marker);color:var(--gray-text);font-weight:inherit;margin-inline-start:-.2em;margin-inline-end:-.2em;padding:.1em .2em}
+header,h1,h1+p,h1+p+*{filter:none;opacity:1;transition:opacity .5s,filter .7s}@starting-style{:is(header,h1,h1+p,h1+p+*){filter:blur(10px);opacity:0}}h1{transition-delay:.1s}h1+p{transition-delay:.2s}h1+p+*{transition-delay:.4s}article{view-transition-name:article}::view-transition-old(article){transition:all .8s;transform:scale(1.2)translateY(2em)}
+</style>
+<link href="/@nue/syntax.css" rel="stylesheet">
+<meta name="generator" content="Nue v1.0.0-RC.4 (nuejs.org)">
+<meta name="date.updated" content="2025-09-30T19:16:22.515Z">
+<meta name="description" content="In the world of Flutter development, the BLoC (Business Logic Component) pattern is a popular choice for managing state. Its core principle is to separate presentation from business logic, which makes your code faster, easier to test, and more reusable. With a simple setup and a strong community ecosystem, BLoC is a very powerful tool.">
+<meta name="author" content="Korbinian Habereder">
+<meta property="og:title" content="An Introduction to Persistent Mutable BLoC State">
+<meta property="og:description" content="In the world of Flutter development, the BLoC (Business Logic Component) pattern is a popular choice for managing state. Its core principle is to separate presentation from business logic, which makes your code faster, easier to test, and more reusable. With a simple setup and a strong community ecosystem, BLoC is a very powerful tool.">
+<meta property="og:image" content="https://liquidiert.github.io/img/website_logo.webp">
+<meta property="article:published_time" content="Tue Sep 30 2025 02:00:00 GMT+0200 (Central European Summer Time)">
+<meta name="nue:components" content=" ">
+    
+  </head>
+
+  <body>
+    
+    <header>
+  <nav><a href="/">Korbinian Habereder</a>
+<a href="/contact/">Contact</a></nav>
+</header>
+    
+    <main>
+    
+
+    <article>
+      <header>
+  <h1>An Introduction to Persistent Mutable BLoC State</h1>
+  <p>
+    <time datetime="2025-09-30T00:00:00.000Z">September 30, 2025</time>
+    
+  </p>
+
+  <img width="1000" height="800" src="img/live_cells_og.webp" alt="Hero image for An Introduction to Persistent Mutable BLoC State">
+</header>
+      <section><p>In the world of Flutter development, the BLoC (Business Logic Component) pattern is a popular choice for managing state. Its core principle is to separate presentation from business logic, which makes your code faster, easier to test, and more reusable. With a simple setup and a strong community ecosystem, BLoC is a very powerful tool.</p>
+<p>However, it&apos;s not without its challenges. One of the primary catches with the standard BLoC implementation is how it handles widget tree updates. Often, a small change in state can trigger a rebuild of a large portion of the widget tree, which can be inefficient.</p>
+<p>This is where a different approach can make a significant impact. Let&apos;s explore a method for creating more selective and efficient widget updates in your BLoC applications.</p></section>
+
+<section><h2>The <q>Live Cells</q> Library</h2>
+<p>To tackle the challenge of inefficient tree updates, we can use a reactive programming library called <a href="https://pub.dev/packages/live_cells">Live Cells</a>.</p>
+<p>Live Cells is a reactive library that enables a two-way data flow directly within the widget tree. You can think of a <q>cell</q> as an observable value holder. When the value inside a cell changes, only the specific widgets observing that cell are rebuilt.</p>
+<p>Here&#x2019;s a brief look at how it works:</p>
+<ol><li><p><em>Define a cell</em>: A cell is a (mutable) variable that holds your state. It can be any type of data, such as an integer, string, or even a complex object.</p></li></ol>
+<pre><code language="dart"><sup>// Define a mutable cell holding an integer</sup>
+<strong>final</strong> <b>count</b> <i>=</i> <b>MutableCell</b><i>(</i><em>0</em><i>)</i><i>;</i>
+
+<sup>// Define a mutable cell holding a string</sup>
+<strong>final</strong> <b>content</b> <i>=</i> <b>MutableCell</b><i>(</i><em>&apos;&apos;</em><i>)</i><i>;</i></code></pre>
+<ol><li><p><em>Define an observer</em>: You can watch a cell for changes and trigger actions. When the cell&apos;s value is updated, the observer automatically runs.</p></li></ol>
+<pre><code language="dart"><sup>// This observer will run whenever the value of &apos;count&apos; changes</sup>
+ValueCell<i>.</i><b>watch</b><i>(</i><i>(</i><i>)</i> <i>{</i>
+  <b>print</b><i>(</i><em>&apos;<i>&#x24;{<b>count()</b>}</i>&apos;</em><i>)</i><i>;</i>
+<i>}</i><i>)</i><i>;</i></code></pre>
+<ol><li><p><em>Update a cell&apos;s value</em>: You can change the value of a cell, which will in turn trigger any observers.</p></li></ol>
+<pre><code language="dart"><sup>// Increment the cell&apos;s value, which calls the observer</sup>
+count<i>.</i>value<i>+</i><i>+</i><i>;</i></code></pre>
+<ol><li><p><em>Bind to Widgets</em>: Use special widgets like CellWidget.builder or LiveTextField to bind UI components directly to cells. This ensures that only these specific widgets redraw when the cell&apos;s value changes.</p></li></ol>
+<pre><code language="dart"><b>Column</b><i>(</i>
+  <b>children</b><i>:</i> <i>[</i>
+    <sup>// LiveTextField is directly bound to the &apos;content&apos; cell</sup>
+    <b>LiveTextField</b><i>(</i>
+      <b>content</b><i>:</i> content
+    <i>)</i><i>,</i>
+
+    <sup>// This CellWidget will only rebuild when &apos;content&apos; changes</sup>
+    CellWidget<i>.</i><b>builder</b><i>(</i><i>(</i><i>)</i> <i>=</i><i>&gt;</i>
+      <b>Text</b><i>(</i><em>&apos;You wrote: <i>&#x24;{<b>content()</b>}</i>&apos;</em><i>)</i>
+    <i>)</i>
+  <i>]</i>
+<i>)</i></code></pre></section>
+
+<section><h2>The Main Idea: Per-Mutable BLoC States</h2>
+<p>So, how does this connect back to BLoC? The core idea is to change our BLoC states to use <code>MutableCells</code> as state variables.</p>
+<p>Instead of having a state class with plain, immutable properties, we define a state where the properties themselves are <code>MutableCell</code> objects.</p>
+<p>Consider this <code>CellsDone</code> state class:</p>
+<pre><code language="dart"><sup>// The state class itself</sup>
+<strong>class</strong> CellsDone extends CellsState <i>{</i>
+  <sup>// Instead of a final MyImmutableClass, we have a final MutableCell</sup>
+  <sup>// that HOLDS a MyImmutableClass.</sup>
+  <strong>final</strong> MutableCell<i>&lt;</i>MyImmutableClass<i>&gt;</i> imConstantlyChanging<i>;</i>
+  
+  <sup>// ... other state code</sup>
+<i>}</i>
+
+<sup>// The data class that the cell holds</sup>
+<strong>class</strong> MyImmutableClass <i>{</i>
+  <strong>final</strong> <strong>String</strong> name<i>;</i>
+  <strong>final</strong> <strong>String</strong> ietsAnders<i>;</i>
+
+  <b>MyImmutableClass</b><i>(</i><i>{</i>
+    required this<i>.</i>name<i>,</i>
+    required this<i>.</i>ietsAnders<i>,</i>
+  <i>}</i><i>)</i><i>;</i>
+<i>}</i></code></pre>
+<p>By doing this, the BLoC state object itself (<code>CellsDone</code>) remains the same. We are not emitting new states from the BLoC. Instead, we are changing the inner value of the <code>MutableCell</code> that the state holds. This allows us to get more efficient tree updates and write less state-handling code.</p></section>
+
+<section><h2>The Difference in Practice: A Code Comparison</h2>
+<p>Let&apos;s compare the traditional BLoC approach with the per-mutable cell approach to see the benefits.</p>
+<h3>Without Cells: The Standard BLoC Approach</h3>
+<p>In a typical BlocBuilder, any change to the state forces the entire builder to run again.</p>
+<pre><code language="dart"><sup>// Standard BlocBuilder setup</sup>
+BlocBuilder<i>&lt;</i>CellsCubit<i>,</i> CellsState<i>&gt;</i><i>(</i>
+  <i>(</i>context<i>,</i> cellState<i>)</i> <i>{</i>
+    <strong>if</strong> <i>(</i>cellState <b>is</b><i>!</i> CellsDone<i>)</i> <i>{</i>
+      <sup>// Loading indicator / error handling</sup>
+    <i>}</i>
+
+    <strong>return</strong> <b>Column</b><i>(</i>
+      <b>children</b><i>:</i> <i>[</i>
+        <b>TextField</b><i>(</i>
+          <b>label</b><i>:</i> <b>Text</b><i>(</i><em>&quot;Name&quot;</em><i>)</i><i>,</i>
+          <b>onChanged</b><i>:</i> <i>(</i>value<i>)</i> <i>=</i><i>&gt;</i>
+            <sup>// This rebuilds the WHOLE widget tree inside the BlocBuilder</sup>
+            context<i>.</i>read<i>&lt;</i>CellsCubit<i>&gt;</i><i>.</i><b>updateName</b><i>(</i>value<i>)</i><i>,</i>
+        <i>)</i><i>,</i>
+        <b>Text</b><i>(</i>cellState<i>.</i>imConstantlyChanging<i>.</i>name<i>)</i><i>,</i>
+
+        <b>TextField</b><i>(</i>
+          <b>label</b><i>:</i> <b>Text</b><i>(</i><em>&quot;Iets Anders&quot;</em><i>)</i><i>,</i>
+          <b>onChanged</b><i>:</i> <i>(</i>value<i>)</i> <i>=</i><i>&gt;</i>
+            <sup>// This ALSO rebuilds the whole tree</sup>
+            context<i>.</i>read<i>&lt;</i>CellsCubit<i>&gt;</i><i>.</i><b>updateIets</b><i>(</i>value<i>)</i><i>,</i>
+        <i>)</i><i>,</i>
+        <b>Text</b><i>(</i>cellState<i>.</i>imConstantlyChanging<i>.</i>ietsAnders<i>)</i><i>,</i>
+      <i>]</i><i>,</i>
+    <i>)</i><i>;</i>
+  <i>}</i>
+<i>)</i><i>;</i></code></pre>
+<p>In this example, typing in either <code>TextField</code> triggers an event, creates a new state, and causes the entire Column to be rebuilt, even the widgets that haven&apos;t changed.</p>
+<h3>With Cells: The Per-Mutable State Approach</h3>
+<p>By combining <code>BlocBuilder</code> with <code>CellWidget.builder</code>, we can achieve much more granular control.</p>
+<pre><code language="dart">BlocBuilder<i>&lt;</i>CellsCubit<i>,</i> CellsState<i>&gt;</i><i>(</i> 
+  <i>(</i>context<i>,</i> cellState<i>)</i> <i>{</i>
+    <strong>if</strong> <i>(</i>cellState <b>is</b><i>!</i> CellsDone<i>)</i> <i>{</i>
+      <sup>// Loading indicator / error handling</sup>
+    <i>}</i>
+    
+    <sup>// CellWidget.builder ensures only its children rebuild on demand</sup>
+    <strong>return</strong> CellWidget<i>.</i><b>builder</b><i>(</i>
+      <i>(</i>_<i>)</i> <i>=</i><i>&gt;</i> <b>Column</b><i>(</i>
+        <b>children</b><i>:</i> <i>[</i>
+          <sup>// LiveTextField is directly bound to the cell&apos;s property</sup>
+          <b>LiveTextField</b><i>(</i>
+            <b>content</b><i>:</i> cellState<i>.</i>imConstantlyChanging<i>.</i>name<i>,</i>
+            <b>label</b><i>:</i> <b>Text</b><i>(</i><em>&quot;Name&quot;</em><i>)</i><i>,</i>
+          <i>)</i><i>,</i>
+          <sup>// This Text widget will ONLY update when the &apos;name&apos; property changes</sup>
+          <b>Text</b><i>(</i>cellState<i>.</i>imConstantlyChanging<i>.</i><b>name</b><i>(</i><i>)</i><i>)</i><i>,</i>
+
+          <sup>// LiveTextField bound to the other property</sup>
+          <b>LiveTextField</b><i>(</i>
+            <b>content</b><i>:</i> cellState<i>.</i>imConstantlyChanging<i>.</i>ietsAnders<i>,</i>
+            <b>label</b><i>:</i> <b>Text</b><i>(</i><em>&quot;Iets Anders&quot;</em><i>)</i><i>,</i>
+          <i>)</i><i>,</i>
+          <sup>// This Text widget will ONLY update when &apos;ietsAnders&apos; changes</sup>
+          <b>Text</b><i>(</i>cellState<i>.</i>imConstantlyChanging<i>.</i><b>ietsAnders</b><i>(</i><i>)</i><i>)</i><i>,</i>
+        <i>]</i><i>,</i>
+      <i>)</i>
+    <i>)</i><i>;</i>
+  <i>}</i>
+<i>)</i><i>;</i></code></pre>
+<p>Here, the <code>BlocBuilder</code> is only responsible for high-level state changes (like switching from a loading state to a done state). Once in the <code>CellsDone</code> state, the <code>CellWidget.builder</code> takes over. Now, when you type in the <q>Name</q> <code>LiveTextField</code>, only the <code>Text</code> widget bound to the name property is rebuilt. The rest of the UI remains untouched, resulting in less time spent on rebuilds and less state management code!</p></section>
+      
+    </article>
+
+    
+  </main>
+    <footer>
+  <nav><a href="/">&#xa9; Korbinian Habereder</a>
+<a href="//github.com/liquidiert" target="_blank"><img src="/img/github.svg" width="22" height="22" alt="Github Projects"></a>
+<a href="//linkedin.com/in/korbinian-h-24a1b113a/" target="_blank"><img src="/img/linkedin.svg" width="22" height="22" alt="LinkedIn profile"></a></nav>
+</footer>
+    
+  </body>
+
+</html>

@@ -15,8 +15,15 @@ article a {
 
 h2 {
   color: var(--gray-text);
-  font-size: 1.1rem;
+  font-size: 2rem;
   margin: 4em 0 0;
+  font-weight: 500;
+}
+
+h3 {
+  color: var(--gray-text);
+  font-size: 1.5rem;
+  margin: 2em 0 0;
   font-weight: 500;
 }
 

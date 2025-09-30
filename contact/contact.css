@@ -1,0 +1,1 @@
+main article section{max-width:none}main article section h1{text-align:left}main article section p{text-align:left}.stack{display:flex;gap:3em}.stack>*{flex:1}.stack figure{margin:0}.stack img{border-radius:4px}@media (max-width:1000px){.stack{flex-direction:column;max-width:460px}}
