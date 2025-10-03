@@ -23,7 +23,7 @@ body {
 
     /*  avatar image */
     > a:first-child {
-      background: url(/img/avatar-rounded.jpg) 0 50% no-repeat;
+      background: url(/img/website_logo.webp) 0 50% no-repeat;
       background-size: 2em;
       padding-left: 2.5em;
     }
